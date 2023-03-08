@@ -1,0 +1,45 @@
+from time import perf_counter
+
+
+class Timer:
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, *args, **kwargs):
+        start = perf_counter()
+        print(f"Вызывалась функция {self.func.__name__}")
+        result = self.func(*args, **kwargs)
+        finish = perf_counter()
+        print(f"Функция отработала за {finish - start}")
+        return result
+
+@Timer
+def fact(n):
+    """Функция факториал"""
+    pr = 1
+    for i in range(1, n + 1):
+        pr *= i
+    return pr
+
+
+# fact = Timer(fact)
+print(fact(5))  # используется декоратор Timer
+#####################################################################################################################
+from timeit import timeit
+
+
+class PointSlots:
+    __slots__ = "x", "y"
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+def make_class_1():
+    s = Point(3, 4)
+    s.x = 100
+    s.x
+    del s.x
+
+q = PointSlots(2, 3)
+print(timeit(make_class_2)) # покажет за сколько времени прошла операция
